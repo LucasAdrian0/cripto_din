@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "810882140006",
+    "project_id": "cripto-din",
+    "storage_bucket": "cripto-din.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:810882140006:android:6a49d94e244877d2da2aa7",
+        "android_client_info": {
+          "package_name": "com.example.cripto_din"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyASEt606JokLbysWPCbbqleN7coENIoObY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

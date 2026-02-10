@@ -5,5 +5,5 @@ class DesignerCores {
   static const ouro = Color(0xFFFFD700);
 
   //referente a paginas
-  static const cor_de_fundo = Colors.black;
+  static const corFundo = Colors.black;
 }

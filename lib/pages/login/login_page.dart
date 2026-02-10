@@ -1,3 +1,5 @@
+import 'package:cripto_din/pages/cadastro_usuario.dart/cadastro_usuario.dart';
+import 'package:cripto_din/pages/carteirabinace/carteira_binance_page.dart';
 import 'package:cripto_din/pages/home/home_page.dart';
 import 'package:cripto_din/theme/designer_cores.dart';
 import 'package:cripto_din/theme/designer_espacamentos.dart';
@@ -5,6 +7,7 @@ import 'package:cripto_din/theme/designer_letras.dart';
 import 'package:cripto_din/theme/designer_tamanhos.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -29,7 +32,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: DesignerCores.cor_de_fundo,
+        backgroundColor: DesignerCores.corFundo,
         body: SingleChildScrollView(
           child: ConstrainedBox(
             constraints: BoxConstraints(
@@ -38,7 +41,7 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                DesignerEspacamentos.vertical_grande,
+                DesignerEspacamentos.verticalGrande,
                 Row(
                   children: [
                     Expanded(child: Container()),
@@ -47,7 +50,7 @@ class _LoginPageState extends State<LoginPage> {
                         flex: 8,
                         child: FaIcon(
                           FontAwesomeIcons.bitcoin,
-                          size: DesignerTamanhos.icone_grande,
+                          size: DesignerTamanhos.iconeGrande,
                           color: DesignerCores.ouro,
                         ),
                       ),
@@ -58,14 +61,14 @@ class _LoginPageState extends State<LoginPage> {
                 DesignerEspacamentos.verticalMedio,
                 const Text(
                   "Ja tem cadastro?",
-                  style: DesignerLetras.subtitulo_estilo,
+                  style: DesignerLetras.subtituloEstilo,
                 ),
                 DesignerEspacamentos.verticalPequeno,
                 const Text(
-                  "Faça seu login e make the change_",
-                  style: DesignerLetras.fonte_normal,
+                  "Tenha acesso ao maior mercado de criptomoedas!",
+                  style: DesignerLetras.fonteNormal,
                 ),
-                const SizedBox(height: 40),
+                DesignerEspacamentos.verticalGrande,
                 Container(
                   width: double.infinity,
                   margin: EdgeInsets.symmetric(horizontal: 30),
@@ -91,7 +94,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 15),
+                DesignerEspacamentos.verticalPequeno,
                 Container(
                   width: double.infinity,
                   margin: EdgeInsets.symmetric(horizontal: 30),
@@ -134,7 +137,69 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 30),
+                DesignerEspacamentos.verticalMedio,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Divider(color: Colors.white),
+                    Text("ou", style: TextStyle(color: Colors.white)),
+                    Divider(color: Colors.white),
+                  ],
+                ),
+                DesignerEspacamentos.verticalGrande,
+                //entar com GOOGLE
+                Container(
+                  width: double.infinity,
+                  margin: const EdgeInsets.symmetric(horizontal: 30),
+                  alignment: Alignment.center,
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: TextButton(
+                      onPressed: () {
+                        // if (emailController.text == "email@email.com" &&
+                        //     senhaController.text.trim() == "123") {
+                        //   Navigator.pushReplacement(
+                        //     context,
+                        //     MaterialPageRoute(builder: (context) => HomePage()),
+                        //   );
+                        // } else {
+                        //   ScaffoldMessenger.of(context).showSnackBar(
+                        //     const SnackBar(
+                        //       content: Text("Erro ao efetuar o login"),
+                        //     ),
+                        //   );
+                        // }
+                      },
+                      style: ButtonStyle(
+                        // ignore: deprecated_member_use
+                        shape: MaterialStateProperty.all(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        backgroundColor: WidgetStateProperty.all(Colors.black),
+                      ),
+                      child: Row(
+                        children: [
+                          FaIcon(
+                            FontAwesomeIcons.google,
+                            color: DesignerCores.ouro,
+                          ),
+                          DesignerEspacamentos.w8,
+                          const Text(
+                            "Entrar com Google",
+                            style: TextStyle(
+                              color: DesignerCores.ouro,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                DesignerEspacamentos.verticalMedio,
                 Container(
                   width: double.infinity,
                   margin: const EdgeInsets.symmetric(horizontal: 30),
@@ -147,7 +212,9 @@ class _LoginPageState extends State<LoginPage> {
                             senhaController.text.trim() == "123") {
                           Navigator.pushReplacement(
                             context,
-                            MaterialPageRoute(builder: (context) => HomePage()),
+                            MaterialPageRoute(
+                              builder: (context) => CarteiraPage(),
+                            ),
                           );
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
@@ -170,11 +237,12 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       child: const Text(
                         "ENTRAR",
-                        style: DesignerLetras.botao_estilo,
+                        style: DesignerLetras.botaoEstilo,
                       ),
                     ),
                   ),
                 ),
+
                 Expanded(child: Container()),
                 Container(
                   margin: EdgeInsets.symmetric(horizontal: 30),
@@ -183,25 +251,33 @@ class _LoginPageState extends State<LoginPage> {
                   child: Text(
                     "Esqueci minha senha",
                     style: TextStyle(
-                      color: Colors.yellow,
+                      color: DesignerCores.ouro,
                       fontWeight: FontWeight.w400,
                     ),
                   ),
                 ),
-                const SizedBox(height: 20),
+                DesignerEspacamentos.verticalMedio,
                 Container(
                   margin: EdgeInsets.symmetric(horizontal: 30),
                   height: 40,
                   alignment: Alignment.center,
-                  child: Text(
-                    "Criar conta",
-                    style: TextStyle(
-                      color: Colors.green,
-                      fontWeight: FontWeight.w400,
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => CadastroUsuario()),
+                      );
+                    },
+                    child: Text(
+                      "Criar conta",
+                      style: TextStyle(
+                        color: Colors.green,
+                        fontWeight: FontWeight.w400,
+                      ),
                     ),
                   ),
                 ),
-                const SizedBox(height: 50),
+                DesignerEspacamentos.verticalGrande,
               ],
             ),
           ),

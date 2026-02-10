@@ -1,4 +1,3 @@
-
 class DesignerTamanhos {
-  static const double icone_grande = 120;
+  static const double iconeGrande = 120;
 }

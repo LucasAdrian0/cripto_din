@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -21,7 +22,7 @@ class _CadastroUsuarioState extends State<CadastroUsuario> {
     setState(() => _loading = true);
 
     try {
-      // 1️⃣ Criar usuário no Firebase Auth
+      //Criar usuário no Firebase Auth
       final credencial = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(
             email: _emailController.text.trim(),
@@ -30,11 +31,11 @@ class _CadastroUsuarioState extends State<CadastroUsuario> {
 
       final uid = credencial.user!.uid;
 
-      // 2️⃣ Salvar dados no Firestore
+      //Salvar dados no Firestore
       await FirebaseFirestore.instance.collection('usuarios').doc(uid).set({
         'nome': _nomeController.text.trim(),
         'email': _emailController.text.trim(),
-        'apiKeyBinance': _apiKeyController.text.trim(),
+        'apiKey': _apiKeyController.text.trim(),
         'aceitouTermos': true,
         'criadoEm': FieldValue.serverTimestamp(),
       });
@@ -90,10 +91,17 @@ class _CadastroUsuarioState extends State<CadastroUsuario> {
               ),
               const SizedBox(height: 20),
               ElevatedButton(
-                onPressed: () {
-                  // Lógica para salvar o usuário
-                },
-                child: const Text('Cadastrar'),
+                onPressed: _loading ? null : _cadastrarUsuario,
+                child: _loading
+                    ? const SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: Colors.white,
+                        ),
+                      )
+                    : const Text('Cadastrar'),
               ),
             ],
           ),

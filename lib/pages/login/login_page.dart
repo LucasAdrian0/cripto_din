@@ -1,13 +1,14 @@
 import 'package:cripto_din/pages/cadastro_usuario.dart/cadastro_usuario.dart';
-import 'package:cripto_din/pages/carteirabinace/carteira_binance_page.dart';
-import 'package:cripto_din/pages/home/home_page.dart';
+import 'package:cripto_din/service/usuario_service.dart';
 import 'package:cripto_din/theme/designer_cores.dart';
 import 'package:cripto_din/theme/designer_espacamentos.dart';
 import 'package:cripto_din/theme/designer_letras.dart';
 import 'package:cripto_din/theme/designer_tamanhos.dart';
+import 'package:cripto_din/widget/recuperar_senha.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -17,8 +18,56 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  var emailController = TextEditingController(text: "email@email.com");
-  var senhaController = TextEditingController(text: "123");
+  Future<void> _loginComEmail() async {
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: emailController.text.trim(),
+        password: senhaController.text.trim(),
+      );
+    } on FirebaseAuthException catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(e.message ?? "Erro ao fazer login")),
+        );
+      }
+    }
+  }
+
+  Future<void> loginComGoogle() async {
+    try {
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+      if (googleUser == null) return;
+
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
+
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      await FirebaseAuth.instance.signInWithCredential(credential);
+
+      //salvar usuário non Firebase
+      final user = FirebaseAuth.instance.currentUser;
+
+      if (user != null) {
+        await UsuarioService().saveUser(user);
+      }
+    } catch (e) {
+      debugPrint("Erro no login Google: $e");
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Erro ao entrar com Google")),
+        );
+      }
+    }
+  }
+
+  var emailController = TextEditingController();
+  var senhaController = TextEditingController();
   bool isObscureText = true;
 
   @override
@@ -44,16 +93,11 @@ class _LoginPageState extends State<LoginPage> {
                 DesignerEspacamentos.verticalGrande,
                 Row(
                   children: [
-                    Expanded(child: Container()),
-                    Center(
-                      child: Expanded(
-                        flex: 8,
-                        child: FaIcon(
-                          FontAwesomeIcons.bitcoin,
-                          size: DesignerTamanhos.iconeGrande,
-                          color: DesignerCores.ouro,
-                        ),
-                      ),
+                    const Spacer(),
+                    FaIcon(
+                      FontAwesomeIcons.bitcoin,
+                      size: DesignerTamanhos.iconeGrande,
+                      color: DesignerCores.ouro,
                     ),
                     Expanded(child: Container()),
                   ],
@@ -155,20 +199,8 @@ class _LoginPageState extends State<LoginPage> {
                   child: SizedBox(
                     width: double.infinity,
                     child: TextButton(
-                      onPressed: () {
-                        // if (emailController.text == "email@email.com" &&
-                        //     senhaController.text.trim() == "123") {
-                        //   Navigator.pushReplacement(
-                        //     context,
-                        //     MaterialPageRoute(builder: (context) => HomePage()),
-                        //   );
-                        // } else {
-                        //   ScaffoldMessenger.of(context).showSnackBar(
-                        //     const SnackBar(
-                        //       content: Text("Erro ao efetuar o login"),
-                        //     ),
-                        //   );
-                        // }
+                      onPressed: () async {
+                        await loginComGoogle();
                       },
                       style: ButtonStyle(
                         // ignore: deprecated_member_use
@@ -207,22 +239,8 @@ class _LoginPageState extends State<LoginPage> {
                   child: SizedBox(
                     width: double.infinity,
                     child: TextButton(
-                      onPressed: () {
-                        if (emailController.text == "email@email.com" &&
-                            senhaController.text.trim() == "123") {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => CarteiraPage(),
-                            ),
-                          );
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text("Erro ao efetuar o login"),
-                            ),
-                          );
-                        }
+                      onPressed: () async {
+                        await _loginComEmail();
                       },
                       style: ButtonStyle(
                         // ignore: deprecated_member_use
@@ -248,13 +266,7 @@ class _LoginPageState extends State<LoginPage> {
                   margin: EdgeInsets.symmetric(horizontal: 30),
                   height: 40,
                   alignment: Alignment.center,
-                  child: Text(
-                    "Esqueci minha senha",
-                    style: TextStyle(
-                      color: DesignerCores.ouro,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
+                  child: const RecuperarSenhaButton(),
                 ),
                 DesignerEspacamentos.verticalMedio,
                 Container(

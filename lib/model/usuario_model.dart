@@ -1,31 +1,41 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class UsuarioModel {
-  String? nome;
-  String? email;
-  String? password;
-  bool? aceitouTermos;
-  String? apiKey;
-  String? secretKey;
+  final String? nome;
+  final String? email;
+  final bool? aceitouTermos;
+  final String? foto;
+  final String apiKey;
+  final String secretKey;
 
-  UsuarioModel({this.nome, this.email, this.password, this.aceitouTermos});
+  UsuarioModel({
+    this.nome,
+    this.email,
+    this.aceitouTermos,
+    this.foto,
+    required this.apiKey,
+    required this.secretKey,
+  });
 
-  UsuarioModel.fromJson(Map<String, dynamic> json) {
-    nome = json['nome'];
-    email = json['email'];
-    password = json['password'];
-    aceitouTermos = json['aceitouTermos'];
-    apiKey = json['apiKey'];
-    secretKey = json['secretKey'];
+  factory UsuarioModel.fromJson(Map<String, dynamic> json) {
+    return UsuarioModel(
+      nome: json['nome'],
+      email: json['email'],
+      aceitouTermos: json['aceitouTermos'],
+      foto: json['foto'],
+      apiKey: json['apiKey'] ?? '',
+      secretKey: json['secretKey'] ?? '',
+    );
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['nome'] = this.nome;
-    data['email'] = this.email;
-    data['password'] = this.password;
-    data['aceitouTermos'] = this.aceitouTermos;
-    //cadastro para obter o acessoa as chaves da API da Binance
-    data['apiKey'] = this.apiKey;
-    data['secretKey'] = this.secretKey;
-    return data;
+    return {
+      'nome': nome,
+      'email': email,
+      'aceitouTermos': aceitouTermos,
+      'foto': foto,
+      'apiKey': apiKey,
+      'secretKey': secretKey,
+    };
   }
 }

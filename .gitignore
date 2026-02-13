@@ -43,3 +43,7 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+#ADICIONEI NO GITIGNORE 
+#dotenv que tem minhas chaves de api para Binance e Coingecko 
+local.env

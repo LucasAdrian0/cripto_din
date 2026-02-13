@@ -1,10 +1,10 @@
 import 'package:cripto_din/pages/cadastro_usuario.dart/cadastro_usuario.dart';
 import 'package:cripto_din/service/usuario_service.dart';
-import 'package:cripto_din/theme/designer_cores.dart';
-import 'package:cripto_din/theme/designer_espacamentos.dart';
-import 'package:cripto_din/theme/designer_letras.dart';
+import 'package:cripto_din/theme/design_temas.dart';
+import 'package:cripto_din/theme/design_espacamentos.dart';
+import 'package:cripto_din/theme/design_letras.dart';
 import 'package:cripto_din/theme/designer_tamanhos.dart';
-import 'package:cripto_din/widget/recuperar_senha.dart';
+import 'package:cripto_din/widgets/recuperar_senha.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -81,7 +81,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: DesignerCores.corFundo,
+        backgroundColor: Colors.black,
         body: SingleChildScrollView(
           child: ConstrainedBox(
             constraints: BoxConstraints(
@@ -90,29 +90,29 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                DesignerEspacamentos.verticalGrande,
+                DesignEspacamentos.verticalGrande,
                 Row(
                   children: [
                     const Spacer(),
                     FaIcon(
                       FontAwesomeIcons.bitcoin,
                       size: DesignerTamanhos.iconeGrande,
-                      color: DesignerCores.ouro,
+                      color: DesignTemas.ouro,
                     ),
                     Expanded(child: Container()),
                   ],
                 ),
-                DesignerEspacamentos.verticalMedio,
+                DesignEspacamentos.verticalMedio,
                 const Text(
                   "Ja tem cadastro?",
                   style: DesignerLetras.subtituloEstilo,
                 ),
-                DesignerEspacamentos.verticalPequeno,
+                DesignEspacamentos.verticalPequeno,
                 const Text(
                   "Tenha acesso ao maior mercado de criptomoedas!",
                   style: DesignerLetras.fonteNormal,
                 ),
-                DesignerEspacamentos.verticalGrande,
+                DesignEspacamentos.verticalGrande,
                 Container(
                   width: double.infinity,
                   margin: EdgeInsets.symmetric(horizontal: 30),
@@ -127,18 +127,18 @@ class _LoginPageState extends State<LoginPage> {
                     decoration: const InputDecoration(
                       contentPadding: EdgeInsets.only(top: 0),
                       enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: DesignerCores.ouro),
+                        borderSide: BorderSide(color: DesignTemas.ouro),
                       ),
                       focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: DesignerCores.ouro),
+                        borderSide: BorderSide(color: DesignTemas.ouro),
                       ),
                       hintText: "Email",
                       hintStyle: TextStyle(color: Colors.white),
-                      prefixIcon: Icon(Icons.person, color: DesignerCores.ouro),
+                      prefixIcon: Icon(Icons.person, color: DesignTemas.ouro),
                     ),
                   ),
                 ),
-                DesignerEspacamentos.verticalPequeno,
+                DesignEspacamentos.verticalPequeno,
                 Container(
                   width: double.infinity,
                   margin: EdgeInsets.symmetric(horizontal: 30),
@@ -154,16 +154,16 @@ class _LoginPageState extends State<LoginPage> {
                     decoration: InputDecoration(
                       contentPadding: const EdgeInsets.only(top: 0),
                       enabledBorder: const UnderlineInputBorder(
-                        borderSide: BorderSide(color: DesignerCores.ouro),
+                        borderSide: BorderSide(color: DesignTemas.ouro),
                       ),
                       focusedBorder: const UnderlineInputBorder(
-                        borderSide: BorderSide(color: DesignerCores.ouro),
+                        borderSide: BorderSide(color: DesignTemas.ouro),
                       ),
                       hintText: "Senha",
                       hintStyle: const TextStyle(color: Colors.white),
                       prefixIcon: const Icon(
                         Icons.lock,
-                        color: DesignerCores.ouro,
+                        color: DesignTemas.ouro,
                       ),
                       suffixIcon: InkWell(
                         onTap: () {
@@ -175,13 +175,13 @@ class _LoginPageState extends State<LoginPage> {
                           isObscureText
                               ? Icons.visibility_off
                               : Icons.visibility,
-                          color: DesignerCores.ouro,
+                          color: DesignTemas.ouro,
                         ),
                       ),
                     ),
                   ),
                 ),
-                DesignerEspacamentos.verticalMedio,
+                DesignEspacamentos.verticalMedio,
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -190,7 +190,7 @@ class _LoginPageState extends State<LoginPage> {
                     Divider(color: Colors.white),
                   ],
                 ),
-                DesignerEspacamentos.verticalGrande,
+                DesignEspacamentos.verticalGrande,
                 //entar com GOOGLE
                 Container(
                   width: double.infinity,
@@ -215,13 +215,13 @@ class _LoginPageState extends State<LoginPage> {
                         children: [
                           FaIcon(
                             FontAwesomeIcons.google,
-                            color: DesignerCores.ouro,
+                            color: DesignTemas.ouro,
                           ),
-                          DesignerEspacamentos.w8,
+                          DesignEspacamentos.w8,
                           const Text(
                             "Entrar com Google",
                             style: TextStyle(
-                              color: DesignerCores.ouro,
+                              color: DesignTemas.ouro,
                               fontSize: 14,
                               fontWeight: FontWeight.w700,
                             ),
@@ -231,7 +231,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                 ),
-                DesignerEspacamentos.verticalMedio,
+                DesignEspacamentos.verticalMedio,
                 Container(
                   width: double.infinity,
                   margin: const EdgeInsets.symmetric(horizontal: 30),
@@ -250,7 +250,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                         backgroundColor: WidgetStateProperty.all(
-                          DesignerCores.ouro,
+                          DesignTemas.ouro,
                         ),
                       ),
                       child: const Text(
@@ -268,7 +268,7 @@ class _LoginPageState extends State<LoginPage> {
                   alignment: Alignment.center,
                   child: const RecuperarSenhaButton(),
                 ),
-                DesignerEspacamentos.verticalMedio,
+                DesignEspacamentos.verticalMedio,
                 Container(
                   margin: EdgeInsets.symmetric(horizontal: 30),
                   height: 40,
@@ -289,7 +289,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                 ),
-                DesignerEspacamentos.verticalGrande,
+                DesignEspacamentos.verticalGrande,
               ],
             ),
           ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class DesignerEspacamentos {
+class DesignEspacamentos {
   static const verticalPequeno = SizedBox(height: 10);
   static const verticalMedio = SizedBox(height: 30);
   static const verticalGrande = SizedBox(height: 50);

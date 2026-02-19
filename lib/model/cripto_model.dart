@@ -28,7 +28,7 @@ class CriptoModel {
     );
   }
 
-  //Vindo do Firestore
+  //Model vindo do Firestore
   factory CriptoModel.fromMap(Map<String, dynamic> map) {
     return CriptoModel(
       id: map['id'],
@@ -40,7 +40,7 @@ class CriptoModel {
     );
   }
 
-  //Para salvar no Firestore
+  //Model para salvar no Firestore
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -52,3 +52,4 @@ class CriptoModel {
     };
   }
 }
+  

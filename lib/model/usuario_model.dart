@@ -1,4 +1,6 @@
 
+import 'package:flutter/material.dart';
+
 class UsuarioModel {
   final String? nome;
   final String? email;
@@ -27,7 +29,19 @@ class UsuarioModel {
     );
   }
 
-  Map<String, dynamic> toJson() {
+   //Model vindo do Firestore
+  factory UsuarioModel.fromMap(Map<String, dynamic> map) {
+    return UsuarioModel(
+      nome: map['nome'],
+      email: map['email'],
+      aceitouTermos: map['aceitouTermos'],
+      foto: map['foto'],
+      apiKey: map['apiKey'],
+      secretKey: map['secretKey'],
+    );
+  }
+
+  Map<String, dynamic> toMap() {
     return {
       'nome': nome,
       'email': email,

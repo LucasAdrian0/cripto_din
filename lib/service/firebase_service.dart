@@ -16,7 +16,7 @@ class FirebaseService {
     await batch.commit();
   }
 
-  /// BUSCAR CRIPTOS DO FIREBASE
+  /// Listar Criptomoedas por ordem descendente de preço
   Stream<List<CriptoModel>> buscarCriptomoedasFirebase() {
     return _firestore
         .collection('criptomoedas')

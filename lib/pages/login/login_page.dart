@@ -53,7 +53,7 @@ class _LoginPageState extends State<LoginPage> {
       final user = FirebaseAuth.instance.currentUser;
 
       if (user != null) {
-        await UsuarioService().saveUser(user);
+        await UsuarioService().salvarUsuario(user);
       }
     } catch (e) {
       debugPrint("Erro no login Google: $e");

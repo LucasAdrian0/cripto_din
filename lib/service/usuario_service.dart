@@ -5,21 +5,30 @@ import 'package:firebase_auth/firebase_auth.dart';
 class UsuarioService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Future<void> saveUser(User user) async {
-    final docRef = _firestore.collection('usuarios').doc(user.uid);
+  Future<void> salvarUsuario(User user) async {
+    final docRef = _firestore.collection('usuario').doc(user.uid);
     final doc = await docRef.get();
 
     if (!doc.exists) {
-      final newUser = UsuarioModel(
+      final usuario = UsuarioModel(
         nome: user.displayName ?? '',
         email: user.email ?? '',
-        foto: user.photoURL ?? '',
+        foto: user.photoURL?? null,
         apiKey: '',
         secretKey: '',
       );
 
-      await docRef.set(newUser.toJson());
+      await docRef.set(usuario.toMap());
     }
   }
-  
+
+  /// BUSCAR USUARIO NO FIREBASE
+  Stream<UsuarioModel?> buscarUsuario(String uid) {
+    return _firestore.collection('usuario').doc(uid).snapshots().map((doc) {
+      if (doc.exists) {
+        return UsuarioModel.fromMap(doc.data()!);
+      }
+      return null;
+    });
+  }
 }

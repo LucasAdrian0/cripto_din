@@ -1,5 +1,8 @@
+import 'package:cripto_din/pages/cadastro_usuario.dart/cadastro_usuario.dart';
 import 'package:cripto_din/service/coingecko_service.dart';
 import 'package:cripto_din/service/firebase_service.dart';
+import 'package:cripto_din/service/usuario_service.dart';
+import 'package:cripto_din/theme/design_espacamentos.dart';
 import 'package:cripto_din/theme/design_tema_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -18,15 +21,21 @@ class _HomepageState extends State<Homepage> {
     _atualizarCriptos();
   }
 
+  final TextEditingController _searchController = TextEditingController();
+  String _pesquisarTexto = "";
+
   final CoingeckoService _coingeckoService = CoingeckoService();
   final FirebaseService _firebaseService = FirebaseService();
 
   Future<void> _atualizarCriptos() async {
     try {
+      debugPrint("Buscando criptomoedas no coingecko");
       final lista = await _coingeckoService.listaDeCriptomoedas();
+      debugPrint("Recebido ${lista.length} criptomoedas da API");
       await _firebaseService.salvarCriptomoedasFirebase(lista);
+      debugPrint("salvando criptomoedas no firebase");
     } catch (e) {
-      print("Erro ao atualizar criptos: $e");
+      debugPrint("Erro ao atualizar criptos: $e");
     }
   }
 
@@ -35,7 +44,28 @@ class _HomepageState extends State<Homepage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
-        title: const Text('Usuário'),
+        //tela de dados do usuário
+        title: GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const CadastroUsuario()),
+            );
+          },
+          child: Row(
+            children: [
+              CircleAvatar(
+                radius: 18,
+                backgroundImage: NetworkImage(
+                  "", // foto real
+                ),
+              ),
+              const SizedBox(width: 10),
+              DesignEspacamentos.verticalPequeno,
+            ],
+          ),
+        ),
+
         actions: [
           Padding(
             padding: EdgeInsets.only(right: 16),
@@ -53,7 +83,7 @@ class _HomepageState extends State<Homepage> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          /// CARROSSEL DE NOTÍCIAS
+          /// CARROSSEL DE NOTÍCIAS - procurar uma api de noticias de cripto
           SizedBox(
             height: 200,
             child: PageView(
@@ -85,16 +115,78 @@ class _HomepageState extends State<Homepage> {
             ),
           ),
 
-          /// LISTA DE CRIPTOS
+          //Pesquisar
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: TextField(
+              controller: _searchController,
+              decoration: InputDecoration(
+                hintText: "Buscar criptomoeda...",
+                prefixIcon: const Icon(Icons.search),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+              onChanged: (value) {
+                setState(() {
+                  _pesquisarTexto = value.toLowerCase();
+                });
+              },
+            ),
+          ),
           Expanded(
-            child: ListView(
-              children: [
-                cryptoTile("Bitcoin", "BTC", "62.450", "+2.3%", Colors.orange),
-                cryptoTile("Ethereum", "ETH", "3.420", "-1.1%", Colors.purple),
-                cryptoTile("BNB", "BNB", "580", "+0.8%", Colors.amber),
-                cryptoTile("Solana", "SOL", "145", "-4.7%", Colors.blue),
-                cryptoTile("XRP", "XRP", "0.62", "-0.5%", Colors.green),
-              ],
+            child: StreamBuilder(
+              stream: _firebaseService.buscarCriptomoedasFirebase(),
+              builder: (context, snapshot) {
+                debugPrint("Buscando Criptomoedas do Firebase");
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+
+                if (snapshot.hasError) {
+                  return const Center(child: Text("Erro ao carregar dados"));
+                }
+
+                if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return const Center(
+                    child: Text("Nenhuma criptomoeda encontrada"),
+                  );
+                }
+
+                final criptos = snapshot.data!;
+                final filtroCripto = criptos.where((cripto) {
+                  return cripto.name.toLowerCase().contains(_pesquisarTexto) ||
+                      cripto.symbol.toLowerCase().contains(_pesquisarTexto);
+                }).toList();
+
+                return ListView.builder(
+                  itemCount: filtroCripto.length,
+                  itemExtent: 72,
+                  itemBuilder: (context, index) {
+                    final cripto = filtroCripto[index];
+
+                    return ListTile(
+                      leading: CircleAvatar(
+                        backgroundColor: Colors.transparent,
+                        backgroundImage: NetworkImage(cripto.image),
+                      ),
+                      title: Text(
+                        "${cripto.name} (${cripto.symbol.toUpperCase()})",
+                      ),
+                      subtitle: Text("R\$ ${cripto.price}"),
+                      trailing: Text(
+                        "${cripto.change24h.toStringAsFixed(2)}%",
+                        style: TextStyle(
+                          color: cripto.change24h >= 0
+                              ? Colors.green
+                              : Colors.red,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
             ),
           ),
         ],
@@ -152,10 +244,3 @@ class _HomepageState extends State<Homepage> {
     );
   }
 }
-// falta chamar a api que salva no firebasee chama do fire passe para a home
-/*
-exemplo para chamada
-  Expanded(
-  child: const CryptoList(),
-),
-*/

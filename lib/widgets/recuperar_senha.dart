@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 class RecuperarSenhaButton extends StatelessWidget {
   const RecuperarSenhaButton({super.key});
 
-  Future<void> _DialogRecuperarSenha(BuildContext context) async {
+  Future<void> _dialogRecuperarSenha(BuildContext context) async {
     final emailController = TextEditingController();
 
     showDialog(
@@ -46,7 +46,7 @@ class RecuperarSenhaButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      onPressed: () => _DialogRecuperarSenha(context),
+      onPressed: () => _dialogRecuperarSenha(context),
       child: const Text("Esqueci minha senha"),
     );
   }

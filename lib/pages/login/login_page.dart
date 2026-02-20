@@ -49,7 +49,7 @@ class _LoginPageState extends State<LoginPage> {
 
       await FirebaseAuth.instance.signInWithCredential(credential);
 
-      //salvar usuário non Firebase
+      //salvar usuário no Firebase
       final user = FirebaseAuth.instance.currentUser;
 
       if (user != null) {

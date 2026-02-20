@@ -10,7 +10,7 @@ class DesignTemas {
     appBarTheme: const AppBarTheme(
       backgroundColor: Colors.white,
       foregroundColor: Colors.black,
-      iconTheme: const IconThemeData(color: Colors.black),
+      iconTheme: IconThemeData(color: Colors.black),
     ),
     colorScheme: ColorScheme.light(primary: ouro),
   );
@@ -21,7 +21,7 @@ class DesignTemas {
     appBarTheme: const AppBarTheme(
       backgroundColor: Colors.black,
       foregroundColor: Colors.white,
-      iconTheme: const IconThemeData(color: Colors.white),
+      iconTheme: IconThemeData(color: Colors.white),
     ),
     colorScheme: ColorScheme.dark(primary: ouro),
   );

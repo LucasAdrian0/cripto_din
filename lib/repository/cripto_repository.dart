@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cripto_din/model/cripto_model.dart';
 
-class FirebaseService {
+class CriptoRepository {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   //SALVAR CRIPTOS NO FIREBASE

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cripto_din/model/usuario_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+//Responsabilidade:
 class UsuarioService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
@@ -13,7 +14,7 @@ class UsuarioService {
       final usuario = UsuarioModel(
         nome: user.displayName ?? '',
         email: user.email ?? '',
-        foto: user.photoURL?? null,
+        foto: user.photoURL,
         apiKey: '',
         secretKey: '',
       );

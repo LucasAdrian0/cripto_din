@@ -1,7 +1,6 @@
 import 'package:cripto_din/pages/cadastro_usuario.dart/cadastro_usuario.dart';
 import 'package:cripto_din/service/coingecko_service.dart';
 import 'package:cripto_din/service/firebase_service.dart';
-import 'package:cripto_din/service/usuario_service.dart';
 import 'package:cripto_din/theme/design_espacamentos.dart';
 import 'package:cripto_din/theme/design_tema_controller.dart';
 import 'package:flutter/material.dart';

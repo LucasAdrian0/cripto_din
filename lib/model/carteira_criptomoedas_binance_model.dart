@@ -40,7 +40,7 @@ class CarteiraCriptomoedasBinanceModel {
     buyerCommission = json['buyerCommission'];
     sellerCommission = json['sellerCommission'];
     commissionRates = json['commissionRates'] != null
-        ? new CommissionRates.fromJson(json['commissionRates'])
+        ? CommissionRates.fromJson(json['commissionRates'])
         : null;
     canTrade = json['canTrade'];
     canWithdraw = json['canWithdraw'];
@@ -53,7 +53,7 @@ class CarteiraCriptomoedasBinanceModel {
     if (json['balances'] != null) {
       balances = <Balances>[];
       json['balances'].forEach((v) {
-        balances!.add(new Balances.fromJson(v));
+        balances!.add(Balances.fromJson(v));
       });
     }
     permissions = json['permissions'].cast<String>();
@@ -63,27 +63,27 @@ class CarteiraCriptomoedasBinanceModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['makerCommission'] = this.makerCommission;
-    data['takerCommission'] = this.takerCommission;
-    data['buyerCommission'] = this.buyerCommission;
-    data['sellerCommission'] = this.sellerCommission;
-    if (this.commissionRates != null) {
-      data['commissionRates'] = this.commissionRates!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['makerCommission'] = makerCommission;
+    data['takerCommission'] = takerCommission;
+    data['buyerCommission'] = buyerCommission;
+    data['sellerCommission'] = sellerCommission;
+    if (commissionRates != null) {
+      data['commissionRates'] = commissionRates!.toJson();
     }
-    data['canTrade'] = this.canTrade;
-    data['canWithdraw'] = this.canWithdraw;
-    data['canDeposit'] = this.canDeposit;
-    data['brokered'] = this.brokered;
-    data['requireSelfTradePrevention'] = this.requireSelfTradePrevention;
-    data['preventSor'] = this.preventSor;
-    data['updateTime'] = this.updateTime;
-    data['accountType'] = this.accountType;
-    if (this.balances != null) {
-      data['balances'] = this.balances!.map((v) => v.toJson()).toList();
+    data['canTrade'] = canTrade;
+    data['canWithdraw'] = canWithdraw;
+    data['canDeposit'] = canDeposit;
+    data['brokered'] = brokered;
+    data['requireSelfTradePrevention'] = requireSelfTradePrevention;
+    data['preventSor'] = preventSor;
+    data['updateTime'] = updateTime;
+    data['accountType'] = accountType;
+    if (balances != null) {
+      data['balances'] = balances!.map((v) => v.toJson()).toList();
     }
-    data['permissions'] = this.permissions;
-    data['uid'] = this.uid;
+    data['permissions'] = permissions;
+    data['uid'] = uid;
     return data;
   }
 }
@@ -104,11 +104,11 @@ class CommissionRates {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['maker'] = this.maker;
-    data['taker'] = this.taker;
-    data['buyer'] = this.buyer;
-    data['seller'] = this.seller;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['maker'] = maker;
+    data['taker'] = taker;
+    data['buyer'] = buyer;
+    data['seller'] = seller;
     return data;
   }
 }
@@ -127,10 +127,10 @@ class Balances {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['asset'] = this.asset;
-    data['free'] = this.free;
-    data['locked'] = this.locked;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['asset'] = asset;
+    data['free'] = free;
+    data['locked'] = locked;
     return data;
   }
 }

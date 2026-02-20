@@ -26,7 +26,7 @@ class _CryptoListState extends State<CryptoList> {
       final lista = await _coingeckoService.listaDeCriptomoedas();
       await _firebaseService.salvarCriptomoedasFirebase(lista);
     } catch (e) {
-      print("Erro ao atualizar criptos: $e");
+      debugPrint("Erro ao atualizar criptos: $e");
     }
   }
 
@@ -70,7 +70,7 @@ class _CryptoListState extends State<CryptoList> {
               // Formata o valor da variação de preço
               final change = cripto.change24h.toStringAsFixed(2);
               final changeText =
-                  (cripto.change24h >= 0 ? '+' : '') + change + '%';
+                  '${cripto.change24h >= 0 ? '+' : ''}$change%';
 
               return ListTile(
                 leading: CircleAvatar(

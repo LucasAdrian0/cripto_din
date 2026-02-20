@@ -1,5 +1,4 @@
 
-import 'package:flutter/material.dart';
 
 class UsuarioModel {
   final String? nome;

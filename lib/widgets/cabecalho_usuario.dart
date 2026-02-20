@@ -9,42 +9,45 @@ class CabecalhoUsuario extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser;
-    final UsuarioService usuarioService = UsuarioService();
+    final usuarioService = UsuarioService();
 
+    // Se não estiver logado
     if (user == null) {
       return const CircleAvatar(radius: 18, child: Icon(Icons.person));
     }
 
+    // Usando StreamBuilder para atualizar Firestore se houver mudanças
     return StreamBuilder<UsuarioModel?>(
       stream: usuarioService.buscarUsuario(user.uid),
       builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-          return const CircleAvatar(radius: 18, child: Icon(Icons.person));
-        }
+        // Dados do Firestore ainda não carregados
+        final usuarioFirestore = snapshot.data;
 
-        final usuario = snapshot.data!;
+        // Prioridade: Firestore > FirebaseAuth
+        final nome = usuarioFirestore?.nome?.isNotEmpty == true
+            ? usuarioFirestore!.nome!
+            : user.displayName ?? "Usuário";
+        final fotoUrl = usuarioFirestore?.foto?.isNotEmpty == true
+            ? usuarioFirestore!.foto
+            : user.photoURL;
 
         return GestureDetector(
           onTap: () {
-            // Navegar para tela de cadastro
+            // Navegar para perfil ou edição do usuário
           },
           child: Row(
             children: [
               CircleAvatar(
                 radius: 18,
-                backgroundImage:
-                    usuario.foto != null && usuario.foto!.isNotEmpty
-                    ? NetworkImage(usuario.foto!)
+                backgroundImage: (fotoUrl != null && fotoUrl.isNotEmpty)
+                    ? NetworkImage(fotoUrl)
                     : null,
-                child: usuario.foto == null || usuario.foto!.isEmpty
+                child: (fotoUrl == null || fotoUrl.isEmpty)
                     ? const Icon(Icons.person)
                     : null,
               ),
               const SizedBox(width: 10),
-              Text(
-                usuario.nome ?? "",
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              ),
+              Text(nome, style: const TextStyle(fontWeight: FontWeight.bold)),
             ],
           ),
         );

@@ -25,11 +25,16 @@ class _LoginPageState extends State<LoginPage> {
         password: senhaController.text.trim(),
       );
     } on FirebaseAuthException catch (e) {
+      debugPrint("Código: ${e.code}");
+      debugPrint("Mensagem: ${e.message}");
+
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(e.message ?? "Erro ao fazer login")),
         );
       }
+    } catch (e) {
+      debugPrint("Erro inesperado: $e");
     }
   }
 

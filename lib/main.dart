@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cripto_din/pages/home/home_page.dart';
+import 'package:cripto_din/pages/splash/splash_page.dart';
 import 'package:cripto_din/theme/design_tema_controller.dart';
 import 'package:cripto_din/theme/design_temas.dart';
 import 'package:flutter/material.dart';
@@ -11,9 +13,14 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+
+  FirebaseFirestore.instance.settings = const Settings(
+    persistenceEnabled: false,
+  );
+
   await dotenv.load(
     fileName: "local.env",
-  ); //não esta no guithub o local_teste.env
+  ); //não esta no github o local_teste.env
   runApp(
     ChangeNotifierProvider(
       create: (_) => ThemeController(),

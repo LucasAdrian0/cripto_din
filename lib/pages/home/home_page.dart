@@ -1,6 +1,7 @@
+import 'package:cripto_din/model/cripto_model.dart';
 import 'package:cripto_din/pages/cadastro_usuario.dart/cadastro_usuario.dart';
+import 'package:cripto_din/repository/firebase_cripto_repository.dart';
 import 'package:cripto_din/service/coingecko_service.dart';
-import 'package:cripto_din/service/firebase_service.dart';
 import 'package:cripto_din/theme/design_espacamentos.dart';
 import 'package:cripto_din/theme/design_tema_controller.dart';
 import 'package:flutter/material.dart';
@@ -14,28 +15,16 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
-  @override
-  void initState() {
-    super.initState();
-    _atualizarCriptos();
-  }
-
   final TextEditingController _searchController = TextEditingController();
   String _pesquisarTexto = "";
 
-  final CoingeckoService _coingeckoService = CoingeckoService();
-  final FirebaseService _firebaseService = FirebaseService();
+  final FirebaseCriptoRepository _firebaseService = FirebaseCriptoRepository();
+  late final Stream<List<CriptoModel>> _buscarCriptomoedas;
 
-  Future<void> _atualizarCriptos() async {
-    try {
-      debugPrint("Buscando criptomoedas no coingecko");
-      final lista = await _coingeckoService.listaDeCriptomoedas();
-      debugPrint("Recebido ${lista.length} criptomoedas da API");
-      await _firebaseService.salvarCriptomoedasFirebase(lista);
-      debugPrint("salvando criptomoedas no firebase");
-    } catch (e) {
-      debugPrint("Erro ao atualizar criptos: $e");
-    }
+  @override
+  void initState() {
+    super.initState();
+    _buscarCriptomoedas = _firebaseService.getCriptomoedas();
   }
 
   @override
@@ -133,9 +122,10 @@ class _HomepageState extends State<Homepage> {
               },
             ),
           ),
+          //Lista de Criptomoedas
           Expanded(
-            child: StreamBuilder(
-              stream: _firebaseService.buscarCriptomoedasFirebase(),
+            child: StreamBuilder<List<CriptoModel>>(
+              stream: _buscarCriptomoedas,
               builder: (context, snapshot) {
                 debugPrint("Buscando Criptomoedas do Firebase");
                 if (snapshot.connectionState == ConnectionState.waiting) {
@@ -146,44 +136,54 @@ class _HomepageState extends State<Homepage> {
                   return const Center(child: Text("Erro ao carregar dados"));
                 }
 
-                if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                final criptos = snapshot.data ?? [];
+                if (criptos.isEmpty) {
                   return const Center(
                     child: Text("Nenhuma criptomoeda encontrada"),
                   );
                 }
 
-                final criptos = snapshot.data!;
-                final filtroCripto = criptos.where((cripto) {
-                  return cripto.name.toLowerCase().contains(_pesquisarTexto) ||
-                      cripto.symbol.toLowerCase().contains(_pesquisarTexto);
+                // Filtro pelo texto de pesquisa
+                final filtroCripto = criptos.where((c) {
+                  return c.name.toLowerCase().contains(_pesquisarTexto) ||
+                      c.symbol.toLowerCase().contains(_pesquisarTexto);
                 }).toList();
 
-                return ListView.builder(
-                  itemCount: filtroCripto.length,
-                  itemExtent: 72,
-                  itemBuilder: (context, index) {
-                    final cripto = filtroCripto[index];
-
-                    return ListTile(
-                      leading: CircleAvatar(
-                        backgroundColor: Colors.transparent,
-                        backgroundImage: NetworkImage(cripto.image),
-                      ),
-                      title: Text(
-                        "${cripto.name} (${cripto.symbol.toUpperCase()})",
-                      ),
-                      subtitle: Text("R\$ ${cripto.price}"),
-                      trailing: Text(
-                        "${cripto.change24h.toStringAsFixed(2)}%",
-                        style: TextStyle(
-                          color: cripto.change24h >= 0
-                              ? Colors.green
-                              : Colors.red,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    );
+                return RefreshIndicator(
+                  onRefresh: () async {
+                    final lista = await CoingeckoService()
+                        .listaDeCriptomoedas();
+                    await _firebaseService.salvarCriptomoedas(lista);
                   },
+                  child: ListView.builder(
+                    itemCount: filtroCripto.length,
+                    itemBuilder: (context, index) {
+                      final cripto = filtroCripto[index];
+                      return ListTile(
+                        leading: CircleAvatar(
+                          backgroundImage: cripto.image.isNotEmpty
+                              ? NetworkImage(cripto.image)
+                              : null,
+                          child: cripto.image.isEmpty
+                              ? const Icon(Icons.currency_bitcoin)
+                              : null,
+                        ),
+                        title: Text(
+                          "${cripto.name} (${cripto.symbol.toUpperCase()})",
+                        ),
+                        subtitle: Text("R\$ ${cripto.price}"),
+                        trailing: Text(
+                          "${cripto.change24h.toStringAsFixed(2)}%",
+                          style: TextStyle(
+                            color: cripto.change24h >= 0
+                                ? Colors.green
+                                : Colors.red,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
                 );
               },
             ),

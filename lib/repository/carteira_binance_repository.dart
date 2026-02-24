@@ -1,6 +1,8 @@
 import 'package:cripto_din/model/carteira_criptomoedas_binance_model.dart';
 import 'package:dio/dio.dart';
 
+
+
 class CarteiraBinanceRepository
  {
   final Dio _dio = Dio(

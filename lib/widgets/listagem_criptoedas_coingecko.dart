@@ -1,5 +1,5 @@
 import 'package:cripto_din/service/coingecko_service.dart';
-import 'package:cripto_din/service/firebase_service.dart';
+import 'package:cripto_din/repository/firebase_cripto_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:cripto_din/model/cripto_model.dart';
 
@@ -11,7 +11,7 @@ class CryptoList extends StatefulWidget {
 }
 
 class _CryptoListState extends State<CryptoList> {
-  final FirebaseService _firebaseService = FirebaseService();
+  final FirebaseCriptoRepository _firebaseService = FirebaseCriptoRepository();
   final CoingeckoService _coingeckoService = CoingeckoService();
 
   @override
@@ -24,7 +24,7 @@ class _CryptoListState extends State<CryptoList> {
   Future<void> _atualizarCriptos() async {
     try {
       final lista = await _coingeckoService.listaDeCriptomoedas();
-      await _firebaseService.salvarCriptomoedasFirebase(lista);
+      await _firebaseService.salvarCriptomoedas(lista);
     } catch (e) {
       debugPrint("Erro ao atualizar criptos: $e");
     }
@@ -51,7 +51,7 @@ class _CryptoListState extends State<CryptoList> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<CriptoModel>>(
-      stream: _firebaseService.buscarCriptomoedasFirebase(),
+      stream: _firebaseService.getCriptomoedas(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return const Center(child: CircularProgressIndicator());
@@ -69,8 +69,7 @@ class _CryptoListState extends State<CryptoList> {
 
               // Formata o valor da variação de preço
               final change = cripto.change24h.toStringAsFixed(2);
-              final changeText =
-                  '${cripto.change24h >= 0 ? '+' : ''}$change%';
+              final changeText = '${cripto.change24h >= 0 ? '+' : ''}$change%';
 
               return ListTile(
                 leading: CircleAvatar(

@@ -1,9 +1,8 @@
-import 'package:cripto_din/model/cripto_model.dart';
-import 'package:cripto_din/pages/cadastro_usuario.dart/cadastro_usuario.dart';
-import 'package:cripto_din/repository/firebase_cripto_repository.dart';
-import 'package:cripto_din/service/coingecko_service.dart';
-import 'package:cripto_din/theme/design_espacamentos.dart';
-import 'package:cripto_din/theme/design_tema_controller.dart';
+import 'package:cripto_din/data/model/cripto_model.dart';
+import 'package:cripto_din/data/repository/firebase_cripto_repository.dart';
+import 'package:cripto_din/data/service/coingecko_service.dart';
+import 'package:cripto_din/presentation/theme/design_tema_controller.dart';
+import 'package:cripto_din/presentation/widgets/cabecalho_usuario.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -33,26 +32,7 @@ class _HomepageState extends State<Homepage> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
         //tela de dados do usuário
-        title: GestureDetector(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const CadastroUsuario()),
-            );
-          },
-          child: Row(
-            children: [
-              CircleAvatar(
-                radius: 18,
-                backgroundImage: NetworkImage(
-                  "", // foto real
-                ),
-              ),
-              const SizedBox(width: 10),
-              DesignEspacamentos.verticalPequeno,
-            ],
-          ),
-        ),
+        title: const CabecalhoUsuario(),
 
         actions: [
           Padding(

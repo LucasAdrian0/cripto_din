@@ -1,4 +1,4 @@
-import 'package:cripto_din/model/carteira_criptomoedas_binance_model.dart';
+import 'package:cripto_din/data/model/carteira_criptomoedas_binance_model.dart';
 import 'package:dio/dio.dart';
 
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../model/carteira_criptomoedas_binance_model.dart';
+import '../../data/model/carteira_criptomoedas_binance_model.dart';
 
 class CarteiraCriptoCard extends StatelessWidget {
   final CarteiraCriptomoedasBinanceModel carteira;

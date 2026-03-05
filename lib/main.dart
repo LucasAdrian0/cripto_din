@@ -1,12 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cripto_din/pages/home/home_page.dart';
-import 'package:cripto_din/pages/splash/splash_page.dart';
-import 'package:cripto_din/theme/design_tema_controller.dart';
-import 'package:cripto_din/theme/design_temas.dart';
+import 'package:cripto_din/presentation/pages/home/home_page.dart';
+import 'package:cripto_din/presentation/theme/design_tema_controller.dart';
+import 'package:cripto_din/presentation/theme/design_temas.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cripto_din/pages/login/login_page.dart';
+import 'package:cripto_din/presentation/pages/login/login_page.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 

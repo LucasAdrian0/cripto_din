@@ -1,6 +1,6 @@
-import 'package:cripto_din/model/carteira_criptomoedas_binance_model.dart';
-import 'package:cripto_din/repository/carteira_binance_repository.dart';
-import 'package:cripto_din/widgets/carteira_cripto_card.dart';
+import 'package:cripto_din/data/model/carteira_criptomoedas_binance_model.dart';
+import 'package:cripto_din/data/repository/carteira_binance_repository.dart';
+import 'package:cripto_din/presentation/widgets/carteira_cripto_card.dart';
 import 'package:flutter/material.dart';
 
 class CarteiraPage extends StatefulWidget {

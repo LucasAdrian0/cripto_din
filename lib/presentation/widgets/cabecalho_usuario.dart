@@ -1,5 +1,5 @@
-import 'package:cripto_din/model/usuario_model.dart';
-import 'package:cripto_din/service/usuario_service.dart';
+import 'package:cripto_din/data/model/usuario_model.dart';
+import 'package:cripto_din/data/service/usuario_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 

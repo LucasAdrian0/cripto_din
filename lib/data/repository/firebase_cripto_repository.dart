@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cripto_din/model/cripto_model.dart';
-import 'package:cripto_din/repository/cripto_repository.dart';
-import 'package:cripto_din/service/coingecko_service.dart';
+import 'package:cripto_din/data/mapper/cripto_mapper.dart';
+import 'package:cripto_din/data/model/cripto_model.dart';
+import 'package:cripto_din/data/repository/cripto_repository.dart';
+import 'package:cripto_din/data/service/coingecko_service.dart';
 import 'package:flutter/material.dart';
 
 class FirebaseCriptoRepository implements CriptoRepository {
@@ -14,7 +15,7 @@ class FirebaseCriptoRepository implements CriptoRepository {
 
     for (var cripto in lista) {
       final docRef = _firestore.collection('criptomoedas').doc(cripto.id);
-      batch.set(docRef, cripto.toMap());
+      batch.set(docRef, CriptoMapper.toMap(cripto));
     }
 
     //fiz para controllar a atualização de cripto
@@ -33,14 +34,14 @@ class FirebaseCriptoRepository implements CriptoRepository {
         .snapshots()
         .map(
           (snapshot) => snapshot.docs
-              .map((doc) => CriptoModel.fromMap(doc.data()))
+              .map((doc) => CriptoMapper.fromMap(doc.data()))
               .toList(),
         );
   }
 
   //atualizar Apos 1 Hora?
   @override
-  Future<bool> atualizarApos1Hora() async {
+  Future<bool> atualizarApos1Minuto() async {
     final snapshot = await _firestore.collection('criptomoedas').limit(1).get();
 
     if (snapshot.docs.isEmpty) return true;
@@ -59,12 +60,12 @@ class FirebaseCriptoRepository implements CriptoRepository {
     final ultimaAtualizacao = timestamp.toDate();
     final agora = DateTime.now();
 
-    return agora.difference(ultimaAtualizacao).inHours >= 1;
+    return agora.difference(ultimaAtualizacao).inMinutes >= 1;
   }
 
   /// Atualiza imediatamente as criptomoedas no Firebase
   @override
-  Future<List<CriptoModel>>atualizarAgora() async {
+  Future<List<CriptoModel>> atualizarAgora() async {
     try {
       debugPrint("Atualizando criptos agora...");
 
@@ -76,12 +77,16 @@ class FirebaseCriptoRepository implements CriptoRepository {
 
       for (var cripto in lista) {
         final docRef = collection.doc(cripto.id);
-        batch.set(docRef, cripto.toMap());
+        batch.set(docRef, CriptoMapper.toMap(cripto));
       }
 
       // Atualizar timestamp de controle
-      final controleRef = FirebaseFirestore.instance.collection('controle').doc('atualizacao');
-      batch.set(controleRef, {'ultimaAtualizacao': FieldValue.serverTimestamp()});
+      final controleRef = FirebaseFirestore.instance
+          .collection('controle')
+          .doc('atualizacao');
+      batch.set(controleRef, {
+        'ultimaAtualizacao': FieldValue.serverTimestamp(),
+      });
 
       await batch.commit();
 

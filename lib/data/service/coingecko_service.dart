@@ -1,4 +1,5 @@
-import 'package:cripto_din/model/cripto_model.dart';
+import 'package:cripto_din/data/mapper/cripto_mapper.dart';
+import 'package:cripto_din/data/model/cripto_model.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
@@ -20,7 +21,7 @@ class CoingeckoService {
         },
       );
       return (response.data as List)
-          .map((json) => CriptoModel.fromApiJson(json))
+          .map((json) => CriptoMapper.fromApiJson(json))
           .toList();
     } catch (e) {
       throw Exception('Erro ao buscar criptomoedas: $e');

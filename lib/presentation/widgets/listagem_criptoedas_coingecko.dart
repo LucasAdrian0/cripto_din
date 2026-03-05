@@ -1,7 +1,7 @@
-import 'package:cripto_din/service/coingecko_service.dart';
-import 'package:cripto_din/repository/firebase_cripto_repository.dart';
+import 'package:cripto_din/data/service/coingecko_service.dart';
+import 'package:cripto_din/data/repository/firebase_cripto_repository.dart';
 import 'package:flutter/material.dart';
-import 'package:cripto_din/model/cripto_model.dart';
+import 'package:cripto_din/data/model/cripto_model.dart';
 
 class CryptoList extends StatefulWidget {
   const CryptoList({super.key});

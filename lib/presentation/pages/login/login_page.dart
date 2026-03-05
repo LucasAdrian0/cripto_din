@@ -1,10 +1,10 @@
-import 'package:cripto_din/pages/cadastro_usuario.dart/cadastro_usuario.dart';
-import 'package:cripto_din/service/usuario_service.dart';
-import 'package:cripto_din/theme/design_temas.dart';
-import 'package:cripto_din/theme/design_espacamentos.dart';
-import 'package:cripto_din/theme/design_letras.dart';
-import 'package:cripto_din/theme/designer_tamanhos.dart';
-import 'package:cripto_din/widgets/recuperar_senha.dart';
+import 'package:cripto_din/presentation/pages/cadastro_usuario.dart/cadastro_usuario.dart';
+import 'package:cripto_din/data/service/usuario_service.dart';
+import 'package:cripto_din/presentation/theme/design_temas.dart';
+import 'package:cripto_din/presentation/theme/design_espacamentos.dart';
+import 'package:cripto_din/presentation/theme/design_letras.dart';
+import 'package:cripto_din/presentation/theme/designer_tamanhos.dart';
+import 'package:cripto_din/presentation/widgets/recuperar_senha.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';

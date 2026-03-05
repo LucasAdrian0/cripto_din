@@ -1,5 +1,5 @@
-import 'package:cripto_din/model/cripto_model.dart';
-import 'package:cripto_din/service/coingecko_service.dart';
+import 'package:cripto_din/data/model/cripto_model.dart';
+import 'package:cripto_din/data/service/coingecko_service.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -15,26 +15,28 @@ void main() {
     final dio = DioMock();
     final response = Response(
       statusCode: 200,
-      data: ,
-      requestOptions: RequestOptions(path: '/'));
-    when(() => dio.get(any())).thenAnswer((_) async => null);
+      data: jsonMock,
+      requestOptions: RequestOptions(path: '/'),
+    );
+    when(() => dio.get(any())).thenAnswer((_) async => response);
 
     final repository = CoingeckoService();
 
     final listadecriptos = await repository.listaDeCriptomoedas();
 
     expect(listadecriptos, isA<List<CriptoModel>>());
+    expect(listadecriptos.length, 50);
   });
 }
 
 final jsonMock = [
-
   {
-    "change24h":-2.05012,
+    "change24h": -2.05012,
     "id": "bitcoin",
-    "image": "https://coin-images.coingecko.com/coins/images/1/large/bitcoin.png?1696501400",
-    "name":"Bitcoin",
+    "image":
+        "https://coin-images.coingecko.com/coins/images/1/large/bitcoin.png?1696501400",
+    "name": "Bitcoin",
     "price": 329980,
-    "symbol": "btc"
-     }
+    "symbol": "btc",
+  },
 ];

@@ -1,10 +1,12 @@
-import 'package:cripto_din/data/model/cripto_model.dart';
-import 'package:cripto_din/data/repository/firebase_cripto_repository.dart';
-import 'package:cripto_din/data/service/coingecko_service.dart';
+import 'package:cripto_din/data/repository/cripto_repository_impl.dart';
+import 'package:cripto_din/data/service/coingecko_service_impl.dart';
+import 'package:cripto_din/domain/repositories/cripto_repository.dart';
 import 'package:cripto_din/presentation/theme/design_tema_controller.dart';
 import 'package:cripto_din/presentation/widgets/cabecalho_usuario.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cripto_din/domain/entities/cripto.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -17,13 +19,19 @@ class _HomepageState extends State<Homepage> {
   final TextEditingController _searchController = TextEditingController();
   String _pesquisarTexto = "";
 
-  final FirebaseCriptoRepository _firebaseService = FirebaseCriptoRepository();
-  late final Stream<List<CriptoModel>> _buscarCriptomoedas;
+  late final CriptoRepository repository;
+  late final Stream<List<Cripto>> _buscarCriptomoedas;
 
   @override
   void initState() {
     super.initState();
-    _buscarCriptomoedas = _firebaseService.getCriptomoedas();
+
+    repository = CriptoRepositoryImpl(
+      firestore: FirebaseFirestore.instance,
+      service: CoingeckoServiceImpl(),
+    );
+
+    _buscarCriptomoedas = repository.getCriptomoedas();
   }
 
   @override
@@ -104,7 +112,7 @@ class _HomepageState extends State<Homepage> {
           ),
           //Lista de Criptomoedas
           Expanded(
-            child: StreamBuilder<List<CriptoModel>>(
+            child: StreamBuilder<List<Cripto>>(
               stream: _buscarCriptomoedas,
               builder: (context, snapshot) {
                 debugPrint("Buscando Criptomoedas do Firebase");
@@ -131,9 +139,7 @@ class _HomepageState extends State<Homepage> {
 
                 return RefreshIndicator(
                   onRefresh: () async {
-                    final lista = await CoingeckoService()
-                        .listaDeCriptomoedas();
-                    await _firebaseService.salvarCriptomoedas(lista);
+                    await repository.atualizarCriptoAgora();
                   },
                   child: ListView.builder(
                     itemCount: filtroCripto.length,

@@ -1,7 +1,8 @@
-import 'package:cripto_din/data/service/coingecko_service.dart';
-import 'package:cripto_din/data/repository/firebase_cripto_repository.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cripto_din/data/service/coingecko_service_impl.dart';
+import 'package:cripto_din/data/repository/cripto_repository_impl.dart';
+import 'package:cripto_din/domain/entities/cripto.dart';
 import 'package:flutter/material.dart';
-import 'package:cripto_din/data/model/cripto_model.dart';
 
 class CryptoList extends StatefulWidget {
   const CryptoList({super.key});
@@ -11,9 +12,12 @@ class CryptoList extends StatefulWidget {
 }
 
 class _CryptoListState extends State<CryptoList> {
-  final FirebaseCriptoRepository _firebaseService = FirebaseCriptoRepository();
-  final CoingeckoService _coingeckoService = CoingeckoService();
+  final CoingeckoServiceImpl _coingeckoService = CoingeckoServiceImpl();
 
+  late final CriptoRepositoryImpl _firebaseService = CriptoRepositoryImpl(
+    firestore: FirebaseFirestore.instance,
+    service: _coingeckoService,
+  );
   @override
   void initState() {
     super.initState();
@@ -50,7 +54,7 @@ class _CryptoListState extends State<CryptoList> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<List<CriptoModel>>(
+    return StreamBuilder<List<Cripto>>(
       stream: _firebaseService.getCriptomoedas(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {

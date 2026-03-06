@@ -1,13 +1,15 @@
 import 'package:cripto_din/data/mapper/cripto_mapper.dart';
 import 'package:cripto_din/data/model/cripto_model.dart';
+import 'package:cripto_din/domain/services/coingecko_service.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-class CoingeckoService {
+class CoingeckoServiceImpl implements CoingeckoService{
   final Dio dio = Dio(
     BaseOptions(baseUrl: dotenv.env['COINGECKO_BASE_URL']!),
   ); //! significa que tenho certeza que não é nulo
 
+@override
   Future<List<CriptoModel>> listaDeCriptomoedas() async {
     try {
       final response = await dio.get(

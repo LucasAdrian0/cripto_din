@@ -1,7 +1,8 @@
 import 'package:cripto_din/presentation/pages/home/home_page.dart';
-import 'package:cripto_din/data/service/coingecko_service.dart';
-import 'package:cripto_din/data/repository/firebase_cripto_repository.dart';
+import 'package:cripto_din/data/service/coingecko_service_impl.dart';
+import 'package:cripto_din/data/repository/cripto_repository_impl.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -11,8 +12,12 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
-  final CoingeckoService _coingeckoService = CoingeckoService();
-  final FirebaseCriptoRepository _firebaseService = FirebaseCriptoRepository();
+  final CoingeckoServiceImpl _coingeckoService = CoingeckoServiceImpl();
+
+  late final CriptoRepositoryImpl _firebaseService = CriptoRepositoryImpl(
+    firestore: FirebaseFirestore.instance,
+    service: _coingeckoService,
+  );
 
   @override
   void initState() {
@@ -23,7 +28,7 @@ class _SplashPageState extends State<SplashPage> {
   void _carregarDados() {
     Future.microtask(() async {
       try {
-        final precisa = await _firebaseService.atualizarApos1Minuto();
+        final precisa = await _firebaseService.atualizarCriptoApos1Minuto();
 
         if (precisa) {
           debugPrint("Atualizando criptos...");

@@ -1,5 +1,5 @@
 import 'package:cripto_din/data/model/usuario_model.dart';
-import 'package:cripto_din/data/service/usuario_service.dart';
+import 'package:cripto_din/data/service/usuario_service_impl.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -9,7 +9,7 @@ class CabecalhoUsuario extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser;
-    final usuarioService = UsuarioService();
+    final usuarioService = UsuarioServiceImpl();
 
     // Se não estiver logado
     if (user == null) {

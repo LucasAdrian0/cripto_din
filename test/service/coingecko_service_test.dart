@@ -1,5 +1,5 @@
 import 'package:cripto_din/data/model/cripto_model.dart';
-import 'package:cripto_din/data/service/coingecko_service.dart';
+import 'package:cripto_din/data/service/coingecko_service_impl.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -20,7 +20,7 @@ void main() {
     );
     when(() => dio.get(any())).thenAnswer((_) async => response);
 
-    final repository = CoingeckoService();
+    final repository = CoingeckoServiceImpl();
 
     final listadecriptos = await repository.listaDeCriptomoedas();
 

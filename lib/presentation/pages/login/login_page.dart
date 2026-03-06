@@ -1,5 +1,5 @@
 import 'package:cripto_din/presentation/pages/cadastro_usuario.dart/cadastro_usuario.dart';
-import 'package:cripto_din/data/service/usuario_service.dart';
+import 'package:cripto_din/data/service/usuario_service_impl.dart';
 import 'package:cripto_din/presentation/theme/design_temas.dart';
 import 'package:cripto_din/presentation/theme/design_espacamentos.dart';
 import 'package:cripto_din/presentation/theme/design_letras.dart';
@@ -58,7 +58,7 @@ class _LoginPageState extends State<LoginPage> {
       final user = FirebaseAuth.instance.currentUser;
 
       if (user != null) {
-        await UsuarioService().salvarUsuario(user);
+        await UsuarioServiceImpl().salvarUsuario(user);
       }
     } catch (e) {
       debugPrint("Erro no login Google: $e");

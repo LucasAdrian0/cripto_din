@@ -1,11 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cripto_din/data/model/usuario_model.dart';
+import 'package:cripto_din/domain/services/usuario_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 //Responsabilidade: USuário no Firebase(buscar e salva)
-class UsuarioService {
+class UsuarioServiceImpl implements UsuarioService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+  @override
   Future<void> salvarUsuario(User user) async {
     final docRef = _firestore.collection('usuario').doc(user.uid);
 
@@ -21,6 +23,7 @@ class UsuarioService {
   }
 
   /// BUSCAR USUARIO NO FIREBASE
+  @override
   Stream<UsuarioModel?> buscarUsuario(String uid) {
     return _firestore.collection('usuario').doc(uid).snapshots().map((doc) {
       if (doc.exists && doc.data() != null) {

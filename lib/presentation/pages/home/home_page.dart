@@ -3,10 +3,14 @@ import 'package:cripto_din/data/service/coingecko_service_impl.dart';
 import 'package:cripto_din/domain/repositories/cripto_repository.dart';
 import 'package:cripto_din/presentation/theme/design_tema_controller.dart';
 import 'package:cripto_din/presentation/widgets/cabecalho_usuario.dart';
+import 'package:cripto_din/presentation/widgets/carrocel_noticias.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cripto_din/domain/entities/cripto.dart';
+import 'package:cripto_din/data/repository/noticias_repository_impl.dart';
+import 'package:cripto_din/data/service/noticias_service_impl.dart';
+import 'package:cripto_din/domain/repositories/noticias_repository.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -21,6 +25,7 @@ class _HomepageState extends State<Homepage> {
 
   late final CriptoRepository repository;
   late final Stream<List<Cripto>> _buscarCriptomoedas;
+  late final NoticiasRepository noticiasRepository;
 
   @override
   void initState() {
@@ -32,6 +37,22 @@ class _HomepageState extends State<Homepage> {
     );
 
     _buscarCriptomoedas = repository.getCriptomoedas();
+
+    noticiasRepository = NoticiasRepositoryImpl(
+      firestore: FirebaseFirestore.instance,
+      service: NoticiasServiceImpl(),
+    );
+
+    _carregarNoticias();
+  }
+
+  Future<void> _carregarNoticias() async {
+    final precisaAtualizar = await noticiasRepository
+        .atualizarNoticiasApos15Minuto();
+
+    if (precisaAtualizar) {
+      await noticiasRepository.atualizarNoticiasAgora();
+    }
   }
 
   @override
@@ -59,29 +80,8 @@ class _HomepageState extends State<Homepage> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          /// CARROSSEL DE NOTÍCIAS - procurar uma api de noticias de cripto
-          SizedBox(
-            height: 200,
-            child: PageView(
-              children: [
-                newsCard(
-                  "Bitcoin sobe 8%",
-                  "Mercado reage após nova alta institucional",
-                  Colors.orange,
-                ),
-                newsCard(
-                  "Ethereum ETF aprovado",
-                  "Investidores otimistas com novo produto",
-                  Colors.purple,
-                ),
-                newsCard(
-                  "Solana dispara 12%",
-                  "Volume aumenta nas últimas 24h",
-                  Colors.blue,
-                ),
-              ],
-            ),
-          ),
+          /// CARROSSEL DE NOTÍCIAS
+          CarrocelDeNoticias(repository: noticiasRepository),
 
           const Padding(
             padding: EdgeInsets.all(16.0),

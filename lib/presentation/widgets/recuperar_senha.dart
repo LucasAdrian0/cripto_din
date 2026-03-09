@@ -32,8 +32,7 @@ class RecuperarSenhaButton extends StatelessWidget {
 
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
-                  content: Text("Email enviado com sucesso!"),
-                ),
+                  content: Text("Email enviado com sucesso!"),                ),
               );
             },
             child: const Text("Enviar"),

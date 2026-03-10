@@ -39,7 +39,7 @@ class NoticiasRepositoryImpl implements NoticiasRepository {
   Stream<List<Noticias>> getNoticias() {
     return firestore
         .collection('noticias')
-        .orderBy('publishedAt', descending: true)
+        .orderBy('published_at', descending: true)
         .snapshots()
         .map(
           (snapshot) => snapshot.docs

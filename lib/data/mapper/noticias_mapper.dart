@@ -31,10 +31,10 @@ class NoticiasMapper {
       url: map['url'] ?? '',
       imageUrl: map['image_url'] ?? '',
       language: map['language'] ?? '',
-      publishedAt: map['published_at'] ?? '',
+      publishedAt: map['published_at']?.toString() ?? '',
       source: map['source'] ?? '',
       categories: (map['categories'] as List?)?.cast<String>() ?? [],
-      relevanceScore: map['relevance_score'] ?? '',
+      relevanceScore: (map['relevance_score'] as num?)?.toDouble() ?? 0.0,
       locale: map['locale'] ?? '',
     );
   }

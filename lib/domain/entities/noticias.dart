@@ -10,7 +10,7 @@ class Noticias {
   final String publishedAt;
   final String source;
   List<String> categories;
-  final String relevanceScore;
+  final double relevanceScore;
   final String locale;
 
   Noticias({

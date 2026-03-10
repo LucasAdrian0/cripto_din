@@ -48,7 +48,7 @@ class NoticiasRepositoryImpl implements NoticiasRepository {
         );
   }
 
-  //atualizar Apos 1 minuto
+  //atualizar Apos 15 minuto
   @override
   Future<bool> atualizarNoticiasApos15Minuto() async {
     final snapshot = await firestore.collection('noticias').limit(3).get();

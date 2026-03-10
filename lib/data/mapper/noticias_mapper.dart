@@ -15,7 +15,7 @@ class NoticiasMapper {
       publishedAt: json['published_at'] ?? '',
       source: json['source'] ?? '',
       categories: (json['categories'] as List?)?.cast<String>() ?? [],
-      relevanceScore: json['relevance_score'] ?? '',
+      relevanceScore: (json['relevance_score'] as num?)?.toDouble() ?? 0.0,
       locale: json['locale'] ?? '',
     );
   }

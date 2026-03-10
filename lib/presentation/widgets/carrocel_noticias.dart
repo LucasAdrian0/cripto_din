@@ -22,7 +22,6 @@ class _CarrocelDeNoticiasState extends State<CarrocelDeNoticias> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           }
-          
 
           if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return const Center(child: Text("Sem notícias"));
@@ -67,6 +66,7 @@ class _CardNoticia extends StatelessWidget {
               gradient: LinearGradient(
                 begin: Alignment.bottomCenter,
                 end: Alignment.topCenter,
+                // ignore: deprecated_member_use
                 colors: [Colors.black.withOpacity(0.7), Colors.transparent],
               ),
             ),

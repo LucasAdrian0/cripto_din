@@ -80,13 +80,21 @@ class _HomepageState extends State<Homepage> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          const Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Text(
+              "Principais Noticias",
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+          ),
+
           /// CARROSSEL DE NOTÍCIAS
           CarrocelDeNoticias(repository: noticiasRepository),
 
           const Padding(
             padding: EdgeInsets.all(16.0),
             child: Text(
-              "Principais Criptomoedas",
+              "Criptomoedas",
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
           ),

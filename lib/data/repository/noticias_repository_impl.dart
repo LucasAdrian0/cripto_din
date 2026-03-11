@@ -36,7 +36,7 @@ class NoticiasRepositoryImpl implements NoticiasRepository {
 
   /// Listar Noticias por ordem descendente de preço
   @override
-  Stream<List<Noticias>> getNoticias() {
+  Stream<List<Noticias>> buscarNoticias() {
     return firestore
         .collection('noticias')
         .orderBy('published_at', descending: true)

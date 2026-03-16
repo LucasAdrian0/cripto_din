@@ -46,6 +46,7 @@ dependencies:
   webview_flutter: ^4.13.1
   convex_bottom_bar: ^3.2.0
   url_launcher: ^6.3.2
+  http: ^1.6.0
 
 dev_dependencies:
   flutter_test:

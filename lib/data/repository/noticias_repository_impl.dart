@@ -50,7 +50,7 @@ class NoticiasRepositoryImpl implements NoticiasRepository {
 
   //atualizar Apos 15 minuto
   @override
-  Future<bool> atualizarNoticiasApos15Minuto() async {
+  Future<bool> atualizarNoticiasApos30Minuto() async {
     final snapshot = await firestore.collection('noticias').limit(3).get();
 
     if (snapshot.docs.isEmpty) return true;
@@ -69,7 +69,7 @@ class NoticiasRepositoryImpl implements NoticiasRepository {
     final ultimaAtualizacao = timestamp.toDate();
     final agora = DateTime.now();
 
-    return agora.difference(ultimaAtualizacao).inMinutes >= 15;
+    return agora.difference(ultimaAtualizacao).inMinutes >= 30;
   }
 
   /// Atualiza imediatamente as criptomoedas no Firebase

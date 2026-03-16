@@ -24,7 +24,7 @@ interface Noticia {
 
 export const buscarNoticias = onSchedule(
   {
-    schedule: "every 15 minutes",
+    schedule: "every 30 minutes",
     timeZone: "America/Sao_Paulo",
   },
   async () => {

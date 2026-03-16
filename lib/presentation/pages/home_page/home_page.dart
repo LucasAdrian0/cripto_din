@@ -43,12 +43,14 @@ class _HomepageState extends State<Homepage> {
       service: NoticiasServiceImpl(),
     );
 
-    _carregarNoticias();
+
+      _carregarNoticias();
+
   }
 
   Future<void> _carregarNoticias() async {
     final precisaAtualizar = await noticiasRepository
-        .atualizarNoticiasApos15Minuto();
+        .atualizarNoticiasApos30Minuto();
 
     if (precisaAtualizar) {
       await noticiasRepository.atualizarNoticiasAgora();
@@ -57,11 +59,11 @@ class _HomepageState extends State<Homepage> {
 
   @override
   Widget build(BuildContext context) {
-      return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
-          //tela de dados do usuário
-          title: const CabecalhoUsuario(),
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+        //tela de dados do usuário
+        title: const CabecalhoUsuario(),
 
         actions: [
           Padding(
@@ -69,7 +71,7 @@ class _HomepageState extends State<Homepage> {
             child: IconButton(
               onPressed: () => context.read<ThemeController>().toggleTheme(),
               icon: Icon(
-                context.watch<ThemeController>().isDark
+                context.select<ThemeController, bool>((t) => t.isDark)
                     ? Icons.light_mode
                     : Icons.dark_mode,
               ),

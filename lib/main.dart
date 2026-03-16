@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cripto_din/presentation/navigation/app_tab_navigation_widget.dart';
-import 'package:cripto_din/presentation/navigation/app_tabs_config.dart';
+import 'package:cripto_din/presentation/app/app_startup.dart';
 import 'package:cripto_din/presentation/theme/design_tema_controller.dart';
 import 'package:cripto_din/presentation/theme/design_temas.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +14,7 @@ void main() async {
   await Firebase.initializeApp();
 
   FirebaseFirestore.instance.settings = const Settings(
-    persistenceEnabled: false,
+    persistenceEnabled: true,
   );
 
   await dotenv.load(
@@ -51,8 +50,8 @@ class MyApp extends StatelessWidget {
               }
 
               if (snapshot.hasData) {
-                return TabNavigationWidget(
-                  tabs: AppTabsConfig.tabs,);
+                //return TabNavigationWidget(tabs: AppTabsConfig.tabs);
+                return const AppStartup();
               }
 
               return const LoginPage();

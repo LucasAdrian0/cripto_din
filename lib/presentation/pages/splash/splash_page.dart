@@ -41,7 +41,7 @@ class _SplashPageState extends State<SplashPage> {
     Future.microtask(() async {
       try {
         final precisa = await _noticiasRepository
-            .atualizarNoticiasApos15Minuto();
+            .atualizarNoticiasApos30Minuto();
 
         if (precisa) {
           debugPrint("Atualizando notícias...");

@@ -1,11 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cripto_din/presentation/pages/home/home_page.dart';
+import 'package:cripto_din/presentation/navigation/app_tab_navigation_widget.dart';
+import 'package:cripto_din/presentation/navigation/app_tabs_config.dart';
 import 'package:cripto_din/presentation/theme/design_tema_controller.dart';
 import 'package:cripto_din/presentation/theme/design_temas.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cripto_din/presentation/pages/login/login_page.dart';
+import 'package:cripto_din/presentation/pages/login_page/login_page.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
@@ -50,7 +51,8 @@ class MyApp extends StatelessWidget {
               }
 
               if (snapshot.hasData) {
-                return const Homepage();
+                return TabNavigationWidget(
+                  tabs: AppTabsConfig.tabs,);
               }
 
               return const LoginPage();

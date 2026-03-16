@@ -1,6 +1,3 @@
-import 'package:cripto_din/domain/entities/noticias.dart';
-import 'package:cripto_din/domain/repositories/noticias.reposytory.dart';
-import 'package:cripto_din/domain/usecases/atualizar_notificas.dart';
 
 // class AtualizarNoticiasImpl implements AtualizarNoticiasUseCase {
 //   final NoticiasRepository repository;

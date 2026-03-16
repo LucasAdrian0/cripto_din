@@ -57,11 +57,11 @@ class _HomepageState extends State<Homepage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
-        //tela de dados do usuário
-        title: const CabecalhoUsuario(),
+      return Scaffold(
+        appBar: AppBar(
+          backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+          //tela de dados do usuário
+          title: const CabecalhoUsuario(),
 
         actions: [
           Padding(

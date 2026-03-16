@@ -1,7 +1,7 @@
 import 'package:cripto_din/data/repository/noticias_repository_impl.dart';
 import 'package:cripto_din/data/service/noticias_service_impl.dart';
 import 'package:cripto_din/domain/services/noticias_service.dart';
-import 'package:cripto_din/presentation/pages/home/home_page.dart';
+import 'package:cripto_din/presentation/pages/home_page/home_page.dart';
 import 'package:cripto_din/data/service/coingecko_service_impl.dart';
 import 'package:cripto_din/data/repository/cripto_repository_impl.dart';
 import 'package:flutter/material.dart';

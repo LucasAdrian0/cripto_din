@@ -1,16 +1,10 @@
-import 'package:cripto_din/data/repository/cripto_repository_impl.dart';
-import 'package:cripto_din/data/service/coingecko_service_impl.dart';
-import 'package:cripto_din/domain/repositories/cripto_repository.dart';
+import 'package:cripto_din/presentation/controllers/homepage_controller.dart';
 import 'package:cripto_din/presentation/theme/design_tema_controller.dart';
 import 'package:cripto_din/presentation/widgets/cabecalho_usuario.dart';
 import 'package:cripto_din/presentation/widgets/carrocel_noticias.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cripto_din/domain/entities/cripto.dart';
-import 'package:cripto_din/data/repository/noticias_repository_impl.dart';
-import 'package:cripto_din/data/service/noticias_service_impl.dart';
-import 'package:cripto_din/domain/repositories/noticias_repository.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -23,42 +17,41 @@ class _HomepageState extends State<Homepage> {
   final TextEditingController _searchController = TextEditingController();
   String _pesquisarTexto = "";
 
-  late final CriptoRepository repository;
-  late final Stream<List<Cripto>> _buscarCriptomoedas;
-  late final NoticiasRepository noticiasRepository;
+  //late final CriptoRepository repository;
+  //late final Stream<List<Cripto>> _buscarCriptomoedas;
+  //late final NoticiasRepository noticiasRepository;
 
-  @override
-  void initState() {
-    super.initState();
+  // @override
+  // void initState() {
+  //   super.initState();
 
-    repository = CriptoRepositoryImpl(
-      firestore: FirebaseFirestore.instance,
-      service: CoingeckoServiceImpl(),
-    );
+  //   repository = CriptoRepositoryImpl(
+  //     firestore: FirebaseFirestore.instance,
+  //     service: CoingeckoServiceImpl(),
+  //   );
 
-    _buscarCriptomoedas = repository.getCriptomoedas();
+  //   _buscarCriptomoedas = repository.getCriptomoedas();
 
-    noticiasRepository = NoticiasRepositoryImpl(
-      firestore: FirebaseFirestore.instance,
-      service: NoticiasServiceImpl(),
-    );
+  //   noticiasRepository = NoticiasRepositoryImpl(
+  //     firestore: FirebaseFirestore.instance,
+  //     service: NoticiasServiceImpl(),
+  //   );
 
+  //   _carregarNoticias();
+  // }
 
-      _carregarNoticias();
+  // Future<void> _carregarNoticias() async {
+  //   final precisaAtualizar = await noticiasRepository
+  //       .atualizarNoticiasApos30Minuto();
 
-  }
-
-  Future<void> _carregarNoticias() async {
-    final precisaAtualizar = await noticiasRepository
-        .atualizarNoticiasApos30Minuto();
-
-    if (precisaAtualizar) {
-      await noticiasRepository.atualizarNoticiasAgora();
-    }
-  }
+  //   if (precisaAtualizar) {
+  //     await noticiasRepository.atualizarNoticiasAgora();
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
+    final controller = context.watch<HomepageController>();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
@@ -69,7 +62,7 @@ class _HomepageState extends State<Homepage> {
           Padding(
             padding: EdgeInsets.only(right: 16),
             child: IconButton(
-              onPressed: () => context.read<ThemeController>().toggleTheme(),
+              onPressed: () => context.watch<ThemeController>().toggleTheme(),
               icon: Icon(
                 context.select<ThemeController, bool>((t) => t.isDark)
                     ? Icons.light_mode
@@ -91,7 +84,7 @@ class _HomepageState extends State<Homepage> {
           ),
 
           /// CARROSSEL DE NOTÍCIAS
-          CarrocelDeNoticias(repository: noticiasRepository),
+          CarrocelDeNoticias(repository: controller.noticiasRepository),
 
           const Padding(
             padding: EdgeInsets.all(16.0),
@@ -123,9 +116,9 @@ class _HomepageState extends State<Homepage> {
           //Lista de Criptomoedas
           Expanded(
             child: StreamBuilder<List<Cripto>>(
-              stream: _buscarCriptomoedas,
+              stream: controller.criptosStream,
               builder: (context, snapshot) {
-                debugPrint("Buscando Criptomoedas do Firebase");
+                debugPrint("Buscando Criptomoedas do Firebase ${DateTime.now()}");
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
                 }
@@ -148,9 +141,7 @@ class _HomepageState extends State<Homepage> {
                 }).toList();
 
                 return RefreshIndicator(
-                  onRefresh: () async {
-                    await repository.atualizarCriptoAgora();
-                  },
+                  onRefresh: controller.refreshCriptos,
                   child: ListView.builder(
                     itemCount: filtroCripto.length,
                     itemBuilder: (context, index) {

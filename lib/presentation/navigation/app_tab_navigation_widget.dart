@@ -37,9 +37,11 @@ class _TabNavigationWidgetState extends State<TabNavigationWidget>
       ),
 
       bottomNavigationBar: ConvexAppBar(
-        style: TabStyle.react, // faz com que o ícone cresça quando selecionado
+        style: TabStyle.fixed,
+        elevation: 0,
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         color: Theme.of(context).primaryColor,
+        activeColor: Theme.of(context).colorScheme.secondary,
         controller: tabController,
         items: widget.tabs
             .map((tab) => TabItem(icon: tab.icon, title: tab.title))
@@ -47,6 +49,7 @@ class _TabNavigationWidgetState extends State<TabNavigationWidget>
         onTap: (index) {
           tabController.animateTo(index);
         },
+        curveSize: 0,
       ),
     );
   }

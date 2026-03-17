@@ -1,5 +1,5 @@
-import 'package:cripto_din/data/mapper/noticias_to_chat_mapper.dart';
+import 'package:cripto_din/domain/entities/noticia_chat.dart';
 
 abstract class IANoticiasRepository {
-  Future<List<NoticiaToChatMapper>> buscarNoticiasRecentes();
+  Future<List<NoticiaChat>> buscarNoticiasRecentes();
 }

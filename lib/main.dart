@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cripto_din/presentation/app/app_startup.dart';
+import 'package:cripto_din/presentation/controllers/homepage_controller.dart';
 import 'package:cripto_din/presentation/theme/design_tema_controller.dart';
 import 'package:cripto_din/presentation/theme/design_temas.dart';
 import 'package:flutter/material.dart';
@@ -21,8 +22,11 @@ void main() async {
     fileName: "local.env",
   ); //não esta no github o local_teste.env
   runApp(
-    ChangeNotifierProvider(
-      create: (_) => ThemeController(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ThemeController()),
+        ChangeNotifierProvider(create: (_) => HomepageController()),
+      ],
       child: const MyApp(),
     ),
   );

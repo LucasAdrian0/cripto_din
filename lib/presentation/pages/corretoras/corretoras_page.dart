@@ -1,4 +1,4 @@
-import 'package:cripto_din/presentation/widgets/opacao_corretora.dart';
+import 'package:cripto_din/presentation/widgets/opcao_corretora.dart';
 import 'package:flutter/material.dart';
 import 'package:cripto_din/data/repository/corretora_repository_impl.dart';
 import 'package:cripto_din/domain/usecases/get_corretora.dart';

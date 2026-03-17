@@ -83,6 +83,7 @@ export const buscarNoticias = onSchedule(
         const texto =
           (noticia.title + " " + noticia.description).toLowerCase();
 
+        // filtrar apenas notícias de crypto
         if (
           !texto.includes("crypto") &&
           !texto.includes("bitcoin") &&
@@ -90,6 +91,7 @@ export const buscarNoticias = onSchedule(
           !texto.includes("blockchain")
         ) continue;
 
+        // se já existe no Firebase, pula
         if (existentes.has(noticia.uuid)) continue;
 
         const ref = db.collection(collectionName).doc(noticia.uuid);

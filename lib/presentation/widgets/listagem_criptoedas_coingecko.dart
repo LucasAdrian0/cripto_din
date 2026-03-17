@@ -21,7 +21,9 @@ class _CryptoListState extends State<CryptoList> {
   @override
   void initState() {
     super.initState();
+      WidgetsBinding.instance.addPostFrameCallback((_) {
     _atualizarCriptos();
+  });
   }
 
   /// Busca os dados da API e salva no Firebase

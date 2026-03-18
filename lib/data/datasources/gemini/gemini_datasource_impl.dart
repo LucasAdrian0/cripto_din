@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:cripto_din/data/datasources/gemini/gemini_datasource.dart';
 import 'package:cripto_din/domain/entities/cripto.dart';
 import 'package:cripto_din/domain/entities/noticia_chat.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class GeminiDatasourceImpl implements GeminiDatasource {
@@ -29,6 +30,20 @@ class GeminiDatasourceImpl implements GeminiDatasource {
     required List<NoticiaChat> noticias,
   }) async {
     final prompt = _buildPrompt(pergunta, criptos, noticias);
+
+    // validação obrigatória (evita erro silencioso)
+    if (apiKey.isEmpty) {
+      throw Exception("API KEY não configurada no .env");
+    }
+
+    if (model.isEmpty) {
+      throw Exception("MODEL não configurado no .env");
+    }
+
+    // logs de debug (ESSENCIAL)
+    debugPrint("MODEL: $model");
+    debugPrint("URL FINAL: $baseUrl/models/$model:generateContent");
+    debugPrint("API KEY: ${apiKey.isNotEmpty ? "OK" : "VAZIA"}");
 
     try {
       final response = await dio.post(
@@ -61,6 +76,15 @@ class GeminiDatasourceImpl implements GeminiDatasource {
     // ERROS DIO V5
     // =========================
     on DioException catch (e) {
+      debugPrint("========== ERRO DIO ==========");
+      debugPrint("TYPE: ${e.type}");
+      debugPrint("MESSAGE: ${e.message}");
+      debugPrint("RESPONSE: ${e.response?.data}");
+      debugPrint("REQUEST: ${e.requestOptions.uri}");
+      debugPrint("==============================");
+      debugPrint(
+        "Erro Dio Gemini: ${e.message}\nResponse: ${e.response?.data}",
+      );
       switch (e.type) {
         case DioExceptionType.connectionTimeout:
           throw Exception("Timeout ao conectar com a IA.");
@@ -69,10 +93,15 @@ class GeminiDatasourceImpl implements GeminiDatasource {
           throw Exception("A IA demorou para responder.");
 
         case DioExceptionType.badResponse:
+          if (e.response?.statusCode == 429) {
+            throw Exception(
+              "Limite de uso da IA atingido. Tente novamente mais tarde.",
+            );
+          }
           throw Exception("Erro Gemini: ${e.response?.data}");
 
         default:
-          throw Exception("Erro de rede: ${e.message}");
+          throw Exception("Erro de rede detalhado : ${e.message}");
       }
     } catch (e) {
       throw Exception("Erro inesperado GeminiDatasource: $e");
@@ -124,6 +153,11 @@ Responda:
 - Em português
 - De forma clara
 - Direta
+- Com base nas notícias e criptos fornecidas
+- Evite respostas genéricas
+- Se não souber a resposta, diga que não sabe ao invés de inventar algo.
+- Seja breve
+- Fale separado o sentimento do mercado (otimista, pessimista, neutro) baseado nas notícias
 - Máximo 6 linhas
 ''';
   }

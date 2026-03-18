@@ -11,8 +11,7 @@ class ChatPage extends StatefulWidget {
   State<ChatPage> createState() => _ChatPageState();
 }
 
-class _ChatPageState extends State<ChatPage>
-    with TickerProviderStateMixin {
+class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
   final TextEditingController _controller = TextEditingController();
   final ScrollController _scrollController = ScrollController();
 
@@ -70,12 +69,14 @@ class _ChatPageState extends State<ChatPage>
       setState(() => _messages.add(aiMessage));
     } catch (e) {
       setState(() {
-        _messages.add(ChatMessage(
-          id: UniqueKey().toString(),
-          text: "Erro ao falar com a IA.",
-          sender: ChatMessageSender.ia,
-          timestamp: DateTime.now(),
-        ));
+        _messages.add(
+          ChatMessage(
+            id: UniqueKey().toString(),
+            text: "Erro ao falar com a IA.$e",
+            sender: ChatMessageSender.ia,
+            timestamp: DateTime.now(),
+          ),
+        );
       });
     } finally {
       setState(() => _isLoading = false);
@@ -93,14 +94,10 @@ class _ChatPageState extends State<ChatPage>
       duration: const Duration(milliseconds: 250),
       curve: Curves.easeOut,
       margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 8),
-      alignment:
-          isUser ? Alignment.centerRight : Alignment.centerLeft,
+      alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
         constraints: const BoxConstraints(maxWidth: 280),
-        padding: const EdgeInsets.symmetric(
-          horizontal: 14,
-          vertical: 10,
-        ),
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
         decoration: BoxDecoration(
           gradient: isUser
               ? const LinearGradient(
@@ -119,7 +116,7 @@ class _ChatPageState extends State<ChatPage>
               color: Colors.black.withOpacity(.05),
               blurRadius: 6,
               offset: const Offset(0, 3),
-            )
+            ),
           ],
         ),
         child: Text(
@@ -144,10 +141,7 @@ class _ChatPageState extends State<ChatPage>
         decoration: BoxDecoration(
           color: Colors.white,
           boxShadow: [
-            BoxShadow(
-              blurRadius: 10,
-              color: Colors.black.withOpacity(.05),
-            )
+            BoxShadow(blurRadius: 10, color: Colors.black.withOpacity(.05)),
           ],
         ),
         child: Row(
@@ -165,8 +159,7 @@ class _ChatPageState extends State<ChatPage>
                     borderRadius: BorderRadius.circular(30),
                     borderSide: BorderSide.none,
                   ),
-                  contentPadding:
-                      const EdgeInsets.symmetric(horizontal: 18),
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 18),
                 ),
               ),
             ),
@@ -183,7 +176,7 @@ class _ChatPageState extends State<ChatPage>
                 ),
                 child: const Icon(Icons.send, color: Colors.white),
               ),
-            )
+            ),
           ],
         ),
       ),
@@ -204,10 +197,7 @@ class _ChatPageState extends State<ChatPage>
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            colors: [
-              Color(0xfff5f7fa),
-              Color(0xffe4ecf7),
-            ],
+            colors: [Color(0xfff5f7fa), Color(0xffe4ecf7)],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
@@ -227,7 +217,7 @@ class _ChatPageState extends State<ChatPage>
                         children: [
                           CircularProgressIndicator(strokeWidth: 2),
                           SizedBox(width: 12),
-                          Text("IA está digitando...")
+                          Text("IA está digitando..."),
                         ],
                       ),
                     );

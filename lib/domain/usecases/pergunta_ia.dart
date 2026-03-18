@@ -1,4 +1,5 @@
 import 'package:cripto_din/domain/entities/chat_mensage.dart';
+import 'package:cripto_din/domain/entities/cripto.dart';
 import 'package:cripto_din/domain/repositories/chat_repository.dart';
 import 'package:cripto_din/domain/repositories/cripto_repository.dart';
 import 'package:cripto_din/domain/repositories/ia_repository.dart';
@@ -16,9 +17,18 @@ class PerguntarIA {
   });
 
   Future<String> call(String pergunta) async {
-    //Busca criptos do Firebase (tempo real)
-    final criptosList = await cryptoRepository.getCriptomoedas().first;
+    //Busca criptos do Firebase (tempo real)  
+    final criptosStream = cryptoRepository.getCriptomoedas();
 
+    List<Cripto> criptosList = [];
+
+    try {
+      criptosList = await criptosStream.first.timeout(
+        const Duration(seconds: 5),
+      );
+    } catch (e) {
+      debugPrint("Erro ao buscar criptos: $e");
+    }
     //Pergunta para IA
     final resposta = await aiRepository.gerarResposta(
       pergunta: pergunta,
